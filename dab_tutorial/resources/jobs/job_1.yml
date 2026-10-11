@@ -1,0 +1,12 @@
+resources:
+  jobs:
+    New_Job_2026_10_11_10_25_23:
+      name: New Job 2026-10-11 10:25:23
+      tasks:
+        - task_key: asset_bundle_job
+          notebook_task:
+            notebook_path: /../../src/data_ingestion.ipynb
+            source: WORKSPACE
+      queue:
+        enabled: true
+      performance_target: PERFORMANCE_OPTIMIZED

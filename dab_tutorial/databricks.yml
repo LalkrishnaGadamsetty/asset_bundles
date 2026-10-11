@@ -1,0 +1,53 @@
+# This is a Declarative Automation Bundle definition for dab_tutorial.
+# See https://docs.databricks.com/dev-tools/bundles/index.html for documentation.
+bundle:
+  name: dab_tutorial
+  uuid: b10dd9b9-2614-4362-aceb-ae4f0d238836
+
+include:
+  - resources/*.yml
+  - resources/*/*.yml
+
+artifacts:
+  python_artifact:
+    type: whl
+    build: uv build --wheel
+
+
+targets:
+  dev:
+
+    mode: development
+    default: true
+    workspace:
+      host: dbc-a3d34a31-4867.cloud.databricks.com
+      root_path: /Workspace/Users/lalkrishna0703@gmail.com/dev/.bundle/${bundle.name}/${bundle.target}
+    # variables:
+    #   catalog: bootcamp
+    #   schema: dev    
+    permissions :
+      - group_name: admins
+        level: CAN_MANAGE
+    presets:
+      name_prefix: ${workspace.current_user.short_name}
+      source_linked_deployment : false
+
+  prod:
+    mode: production
+    workspace:
+      host: dbc-a3d34a31-4867.cloud.databricks.com
+      # We explicitly deploy to /Workspace/Users/lalkrishna0703@gmail.com to make sure we only have a single copy.
+      root_path: /Workspace/Users/lalkrishna0703@gmail.com/prod/.bundle/${bundle.name}/${bundle.target}
+
+
+    presets:
+      name_prefix: ${workspace.current_user.short_name}
+      source_linked_deployment : false
+
+
+    permissions:
+      - user_name: lalkrishna0703@gmail.com
+        level: CAN_MANAGE
+      
+      - group_name: admins
+        level : CAN_RUN
